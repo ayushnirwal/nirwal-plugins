@@ -85,12 +85,16 @@ Title: `Raw - <short name>`. Body:
 ```
 # Raw - <short name>
 
-**Origin:** <URL, file path, or "pasted in chat"> · **Author:** <name or unknown> · **Published:** <date or unknown> · **Captured:** <today>
+**Origin:** <URL, file path, or "pasted in chat"> · **Author:** <name or unknown> · **Published:** <date> · **Captured:** <today> · **Captured via:** <curl (verbatim) | WebFetch (may not be verbatim) | file | pasted>
 
 ---
 
 <full source text, unmodified>
 ```
+
+## Dates
+
+Write a published date only if it comes from the source itself (its text, byline or the page's own metadata). Otherwise write `unknown`, or `<date> (unverified, from <where>)` if a secondary source gives one. Never present a guessed or summarised date as fact, on raw notes, source pages or anywhere else.
 
 ## Log entries
 
