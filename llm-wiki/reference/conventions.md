@@ -29,6 +29,16 @@ Every research topic is its own wiki under `wiki/<slug>/` (slug: lowercase, hyph
 
 The four navigation notes sit directly in `wiki/<slug>/`.
 
+## Listing a wiki's pages
+
+`list_notes` with `subpath` currently returns nothing on this vault (upstream bug). Until that is fixed:
+
+1. Call `list_notes` with `folder: "inbox"`, no `subpath`, and `limit: 5000`.
+2. If the number of results equals the limit, call again with a higher limit; never work from a capped list.
+3. Keep only notes whose `path` starts with `wiki/<slug>/`. The subfolder is the next path segment (`raw/`, `sources/`, `concepts/`, `entities/`, `answers/`); navigation notes have none.
+
+Each result includes `title`, `wikilinks` and timestamps, so one call is enough for a whole-wiki survey.
+
 ## Finding the wiki for a topic
 
 1. List existing wikis: `list_folders` and take the direct children of `wiki/`. For each, read its `<Topic> Overview` if you need more than the name.

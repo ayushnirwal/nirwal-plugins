@@ -16,7 +16,7 @@ A topic is required. Find its wiki per "Finding the wiki for a topic"; never cre
 ## 1. Survey
 
 - Read `<Topic> Schema`, `<Topic> Index` and `<Topic> Overview`.
-- `list_notes` for every subfolder of `wiki/<slug>/` (`raw`, `sources`, `concepts`, `entities`, `answers`) and collect titles, wikilinks and timestamps.
+- List every page in `wiki/<slug>/` per "Listing a wiki's pages" and collect titles, subfolders, wikilinks and timestamps.
 - Use `backlinks` to find what links to each page.
 
 ## 2. Fix automatically (mechanical only)
