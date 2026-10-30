@@ -1,15 +1,50 @@
 # llm-wiki
 
-Private Claude Code plugin implementing Andrej Karpathy's [LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) on top of a ZenNotes vault. Each research topic gets its own wiki under `wiki/<topic>/`, which the LLM writes and maintains from sources you curate.
+A Claude Code plugin implementing Andrej Karpathy's [LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f). Claude builds and maintains an interlinked Markdown wiki per research topic from sources you curate, so knowledge compounds instead of being re-retrieved on every question.
+
+## Install
+
+```
+/plugin marketplace add <path or GitHub repo of the nirwal-plugins marketplace>
+/plugin install llm-wiki@nirwal-plugins
+```
 
 ## Commands
 
 | Command | Does |
 |---|---|
-| `/llm-wiki:ingest [topic] <url \| file \| raw note \| text>` | Saves the full source to `raw/`, writes a source page, updates concept/entity pages, index, overview and log. Creates the wiki (after confirming) if the topic is new. |
+| `/llm-wiki:ingest [topic] <url \| file \| raw page \| text>` | Saves the full source to `raw/`, writes a source page, updates concept/entity pages, index, overview and log. Creates the wiki (after confirming) if the topic is new. |
 | `/llm-wiki:query [topic] <question>` | Answers from the wiki with citations; saves reusable answers to `answers/`. Claude may also run it on its own, read-only. |
-| `/llm-wiki:lint <topic>` | Fixes mechanical issues (index, reciprocal links, renamed-page links) and reports the rest as a checklist. |
+| `/llm-wiki:lint <topic>` | Fixes mechanical issues (index, reciprocal links, moved-page links) and reports the rest as a checklist. |
+
+## Backends
+
+| Backend | Storage | Links |
+|---|---|---|
+| `zennotes` | A ZenNotes vault, through the `zennotes` MCP server | `[[wikilinks]]` |
+| `obsidian` | An Obsidian vault on disk (Obsidian needn't be running) | `[[wikilinks]]`, or Markdown links if the vault prefers them |
+| `folder` | Any directory of Markdown files, e.g. a git repo | Relative Markdown links |
 
 ## Setup
 
-Requires the `zennotes` MCP server to be connected. Shared rules live in `reference/conventions.md`; per-wiki preferences go in each wiki's `<Topic> Schema` note.
+The first command you run detects the available backends, asks which to use, and writes `~/.config/llm-wiki/config.json`:
+
+```json
+{ "backend": "obsidian", "root": "~/Documents/Vault", "wikiDir": "wiki" }
+```
+
+`root` is required for `obsidian` and `folder`. `wikiDir` defaults to `wiki`; each topic lives in `<wikiDir>/<topic-slug>/`.
+
+## Layout of a wiki
+
+```
+wiki/<topic-slug>/
+  raw/        full, unmodified sources (never edited by Claude)
+  sources/    one summary page per source
+  concepts/   ideas, techniques, patterns
+  entities/   people, organisations, tools
+  answers/    saved query answers
+  <Topic> Index · <Topic> Log · <Topic> Overview · <Topic> Schema
+```
+
+Shared rules live in `reference/conventions.md`, per-backend instructions in `reference/backends/`, and per-wiki preferences in each wiki's `<Topic> Schema` page.

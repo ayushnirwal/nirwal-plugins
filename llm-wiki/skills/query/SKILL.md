@@ -1,6 +1,6 @@
 ---
 name: query
-description: Answer a question from the user's topic wikis in the ZenNotes vault (wiki/<topic>/), with citations to wiki pages. Use when the user asks what they know, have read or have researched about a topic that may be covered by one of their wikis, or runs /llm-wiki:query.
+description: Answer a question from the user's LLM-maintained topic wikis, with citations to wiki pages. Use when the user asks what they know, have read or have researched about a topic that may be covered by one of their wikis, or runs /llm-wiki:query.
 argument-hint: "[topic] <question>"
 ---
 
@@ -8,7 +8,7 @@ argument-hint: "[topic] <question>"
 
 Input: $ARGUMENTS
 
-First read `../../reference/conventions.md` (relative to this skill's base directory).
+First read `../../reference/conventions.md` (relative to this skill's base directory) and do its Setup (config, then backend file). Every storage operation below is done the way the backend file says. If there is no config yet and you were invoked on your own (not typed by the user), don't run first-run setup: just answer normally without the wiki.
 
 ## Write permission
 
@@ -23,13 +23,13 @@ First read `../../reference/conventions.md` (relative to this skill's base direc
 ## 2. Gather
 
 1. Read the wiki's `<Topic> Schema` and `<Topic> Index`.
-2. Read the pages the Index points to. Follow `[[wikilinks]]` as far as the question needs.
-3. Only if the Index isn't enough, use `search_text` within `wiki/<slug>/`.
+2. Read the pages the Index points to. Follow links as far as the question needs.
+3. Only if the Index isn't enough, search the wiki's text.
 4. Go to `raw/` only to check an exact quote or detail a source page lacks.
 
 ## 3. Answer
 
-- Answer from the wiki, citing wiki pages inline (`[[Page]]`, or as links per the conventions when replying in chat).
+- Answer from the wiki, citing wiki pages inline (shown per the backend's "Showing pages to the user").
 - Say clearly where the wiki is silent or its sources disagree. You may add outside knowledge only if you label it as not from the wiki.
 
 ## 4. Save back (typed invocation only)

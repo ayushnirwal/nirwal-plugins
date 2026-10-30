@@ -1,16 +1,16 @@
 {
-  "name": "nirwal-private",
+  "name": "nirwal-plugins",
   "owner": {
     "name": "Ayush Nirwal"
   },
   "metadata": {
-    "description": "Private plugins for this laptop."
+    "description": "Claude Code plugins by Ayush Nirwal."
   },
   "plugins": [
     {
       "name": "llm-wiki",
       "source": "./llm-wiki",
-      "description": "Karpathy-style LLM wikis in the ZenNotes vault: ingest, query, lint."
+      "description": "Karpathy-style LLM wikis per research topic: ingest, query, lint. Works with ZenNotes, Obsidian or a plain folder."
     }
   ]
 }

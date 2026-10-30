@@ -1,7 +1,7 @@
 ---
 name: ingest
-description: Ingest a source (URL, local file, pasted text, or a raw note) into a topic wiki in the ZenNotes vault, updating summary, concept, entity and navigation pages. Creates the wiki if the topic is new (after the user confirms).
-argument-hint: "[topic] <url | file path | raw note | pasted text>"
+description: Ingest a source (URL, local file, pasted text, or a raw page) into a topic wiki, updating summary, concept, entity and navigation pages. Creates the wiki if the topic is new (after the user confirms).
+argument-hint: "[topic] <url | file path | raw page | pasted text>"
 disable-model-invocation: true
 ---
 
@@ -9,9 +9,9 @@ disable-model-invocation: true
 
 Input: $ARGUMENTS
 
-If the input is empty, ask the user what to ingest (URL, file path, pasted text or raw note, optionally preceded by a topic) and stop.
+If the input is empty, ask the user what to ingest (URL, file path, pasted text or raw page, optionally preceded by a topic) and stop.
 
-First read `../../reference/conventions.md` (relative to this skill's base directory). Everything below assumes those conventions. Ingest **one source per run**; if given several, do them one after another, each fully.
+First read `../../reference/conventions.md` (relative to this skill's base directory) and do its Setup (config, then backend file). Everything below uses those conventions, and every storage operation ("find", "read", "create", "append", "edit", "rewrite", "verify") is done the way the backend file says. Ingest **one source per run**; if given several, do them one after another, each fully.
 
 ## 1. Resolve the topic
 
@@ -26,16 +26,16 @@ The goal is the **complete, unmodified** text in `raw/`.
 
 | Input | How |
 |---|---|
-| A note already in `wiki/<slug>/raw/` | Use it as is. |
+| A page already in the wiki's `raw/` | Use it as is. |
 | URL | See "Fetching URLs" below. |
-| Local file | Read it (use the pdf skill for PDFs). |
+| Local file | Read it (use a PDF skill for PDFs if one is available). |
 | Pasted text | Use the text exactly as pasted. |
 
 ### Fetching URLs
 
 WebFetch passes pages through a model, so its output can be paraphrased. Prefer an exact copy:
 
-1. **Plain-text version first.** If the content is available as plain text or Markdown, download it with `curl -sSL` into a new, empty temporary directory (the session scratchpad if there is one) and read the file. Examples:
+1. **Plain-text version first.** If the content is available as plain text or Markdown, download it with `curl -sSL` into a new, empty temporary directory (per the backend file) and read the file. Examples:
    - GitHub gist `gist.github.com/<user>/<id>` → `https://gist.githubusercontent.com/<user>/<id>/raw`
    - GitHub file `github.com/<o>/<r>/blob/<ref>/<path>` → `https://raw.githubusercontent.com/<o>/<r>/<ref>/<path>`
    - URLs that already point at `.md`, `.txt` or other plain text
@@ -46,27 +46,27 @@ If a URL is paywalled, blocked (401/403) or returns only a teaser, **stop**: tel
 
 ### Duplicate check
 
-Before creating anything, `search_by_title` for both `Raw - <short name>` and `Source - <short name>` in this wiki (and check `Origin:` lines for the same URL or file):
+Before creating anything, find `Raw - <short name>` and `Source - <short name>` in this wiki (and check `Origin:` lines for the same URL or file):
 
-- **Raw note exists:** tell the user it was already ingested and ask whether to re-ingest. On re-ingest, reuse the raw note.
-- **Source page exists but no raw note** (e.g. ingested before capture worked): capture the raw note now, then rebuild the existing source page in place in step 3. Never create a second source page.
+- **Raw page exists:** tell the user it was already ingested and ask whether to re-ingest. On re-ingest, reuse the raw page.
+- **Source page exists but no raw page** (e.g. ingested before capture worked): capture the raw page now, then rebuild the existing source page in place in step 3. Never create a second source page.
 
-### Create and verify the raw note
+### Create and verify the raw page
 
-1. Create the raw note in `wiki/<slug>/raw/` using the raw note template.
-2. Verify it is complete: the `size` returned by `create_note` should equal the captured text's byte size plus the header (title, metadata line, `---` and blank lines). For a downloaded file, compare with `wc -c`. If the difference is more than the header accounts for, `read_note` it, find what was dropped or altered, and fix it with `replace_in_note` / `write_note` before continuing.
+1. Create the raw page in the wiki's `raw/` folder using the raw page template.
+2. Verify it is complete: its byte size (per the backend's "Verifying a write") should equal the captured text's byte size plus the header (title, metadata line, `---` and blank lines). For a downloaded file, get the text's size with `wc -c`. If the difference is more than the header accounts for, read the page back, find what was dropped or altered, and fix it before continuing.
 
 ## 3. Write the source page
 
-Create `Source - <short name>` in `sources/` from the template: summary, key claims, notable quotes (verbatim, short). Link the raw note. If the duplicate check found an existing source page, read it and rewrite it in place instead, keeping its title so existing links still work.
+Create `Source - <short name>` in `sources/` from the template: summary, key claims, notable quotes (verbatim, short). Link the raw page. If the duplicate check found an existing source page, read it and rewrite it in place instead, keeping its title so existing links still work.
 
 ## 4. Update the wiki
 
 For every concept and entity the source meaningfully touches (typically 5–15 pages):
 
-- Existing page in this wiki: read it, then integrate the new information with citations. Prefer `replace_in_note` / `append_to_note` over rewriting whole pages. Flag contradictions; never silently overwrite.
+- Existing page in this wiki: read it, then integrate the new information with citations. Prefer appending or editing part of a page over rewriting it. Flag contradictions; never silently overwrite.
 - No page yet: check the title (per "Page titles"), then create it in `concepts/` or `entities/`.
-- Keep `[[wikilinks]]` and `## Related` sections current in both directions.
+- Keep links and `## Related` sections current in both directions.
 
 Then:
 - Add every new page to `<Topic> Index` under the right section, one line each: `- [[Title]]: <one-line description>`.

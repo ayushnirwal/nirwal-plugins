@@ -1,9 +1,10 @@
 {
   "name": "llm-wiki",
-  "version": "0.2.1",
-  "description": "Karpathy-style LLM wikis in the ZenNotes vault: one wiki per research topic, with ingest, query and lint commands.",
+  "version": "0.3.0",
+  "description": "Karpathy-style LLM wikis: one Markdown wiki per research topic, built and maintained by Claude with ingest, query and lint commands. Works with ZenNotes, Obsidian or a plain folder.",
   "author": {
     "name": "Ayush Nirwal"
   },
-  "keywords": ["wiki", "knowledge-base", "zennotes"]
+  "license": "MIT",
+  "keywords": ["wiki", "knowledge-base", "llm-wiki", "obsidian", "zennotes", "markdown"]
 }
