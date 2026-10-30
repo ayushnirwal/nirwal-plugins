@@ -1,0 +1,16 @@
+{
+  "name": "nirwal-private",
+  "owner": {
+    "name": "Ayush Nirwal"
+  },
+  "metadata": {
+    "description": "Private plugins for this laptop."
+  },
+  "plugins": [
+    {
+      "name": "llm-wiki",
+      "source": "./llm-wiki",
+      "description": "Karpathy-style LLM wikis in the ZenNotes vault: ingest, query, lint."
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "llm-wiki",
+  "version": "0.1.0",
+  "description": "Karpathy-style LLM wikis in the ZenNotes vault: one wiki per research topic, with ingest, query and lint commands.",
+  "author": {
+    "name": "Ayush Nirwal"
+  },
+  "keywords": ["wiki", "knowledge-base", "zennotes"]
+}
