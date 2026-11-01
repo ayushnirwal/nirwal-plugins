@@ -2,10 +2,13 @@
 
 A Claude Code plugin implementing Andrej Karpathy's [LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f). Claude builds and maintains an interlinked Markdown wiki per research topic from sources you curate, so knowledge compounds instead of being re-retrieved on every question.
 
+> [!WARNING]
+> **Early development (0.x).** The wiki layout, page conventions and `config.json` format may change between versions, and a wiki made by an older version may need a `/llm-wiki:lint` pass or manual fixes afterwards. Keep your wiki under version control or backed up.
+
 ## Install
 
 ```
-/plugin marketplace add <path or GitHub repo of the nirwal-plugins marketplace>
+/plugin marketplace add ayushnirwal/nirwal-plugins
 /plugin install llm-wiki@nirwal-plugins
 ```
 
@@ -48,3 +51,7 @@ wiki/<topic-slug>/
 ```
 
 Shared rules live in `reference/conventions.md`, per-backend instructions in `reference/backends/`, and per-wiki preferences in each wiki's `<Topic> Schema` page.
+
+## Credits
+
+The wiki pattern this plugin implements comes from Andrej Karpathy's gist [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f). This plugin is an independent implementation; any mistakes are its own.
