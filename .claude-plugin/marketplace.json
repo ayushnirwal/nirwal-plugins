@@ -11,6 +11,11 @@
       "name": "llm-wiki",
       "source": "./llm-wiki",
       "description": "Karpathy-style LLM wikis per research topic: ingest, query, lint. Works with ZenNotes, Obsidian or a plain folder."
+    },
+    {
+      "name": "project-notes",
+      "source": "./project-notes",
+      "description": "Keep a project's task notes, plans, decisions, commits and token usage in a ZenNotes vault, one note per task and subtask under a project hub."
     }
   ]
 }

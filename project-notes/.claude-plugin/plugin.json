@@ -1,0 +1,10 @@
+{
+  "name": "project-notes",
+  "version": "0.1.0",
+  "description": "Keep a project's task notes, plans, decisions, commits and token usage in a ZenNotes vault (zennotes MCP), one note per task and subtask under a project hub.",
+  "author": {
+    "name": "Ayush Nirwal"
+  },
+  "license": "MIT",
+  "keywords": ["notes", "zennotes", "project-management", "tasks", "token-usage"]
+}

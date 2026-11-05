@@ -10,12 +10,14 @@ A Claude Code plugin marketplace.
 | Plugin | Version | Description |
 |---|---|---|
 | [llm-wiki](llm-wiki/) | 0.3.0 | Karpathy-style LLM wikis per research topic, with ingest, query and lint commands. Works with ZenNotes, Obsidian or a plain folder. |
+| [project-notes](project-notes/) | 0.1.0 | Keep a project's task notes, plans, decisions, commits and token usage in a ZenNotes vault, one note per task and subtask under a project hub. |
 
 ## Install
 
 ```
 /plugin marketplace add ayushnirwal/nirwal-plugins
 /plugin install llm-wiki@nirwal-plugins
+/plugin install project-notes@nirwal-plugins
 ```
 
 To pick up new versions, run `/plugin marketplace update nirwal-plugins`.
